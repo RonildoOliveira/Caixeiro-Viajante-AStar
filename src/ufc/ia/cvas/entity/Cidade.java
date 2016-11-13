@@ -30,7 +30,14 @@ public class Cidade {
 		
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
+	
+	public static double getDistanciaDuasCidades(Cidade a, Cidade b){
+		double x = a.getX()-b.getX();
+		double y = a.getY()-b.getY();
 		
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
+	
 	public No getNo() {
 		return no;
 	}

@@ -8,7 +8,7 @@ import java.util.List;
  * weights.
  */
 public class Aresta implements Comparable<Object> {
-  private float peso;
+  private double peso;
   private Cidade u, v;
 
   public Aresta(Cidade u, Cidade v) {
@@ -16,12 +16,12 @@ public class Aresta implements Comparable<Object> {
     this.v = v;
   }
 
-  public Aresta(Cidade u, Cidade v, float peso) {
+  public Aresta(Cidade u, Cidade v, double peso) {
     this(u, v);
     this.peso = peso;
   }
 
-  public float getPeso() { 
+  public double getPeso() { 
 	  return this.peso;
   }
   
@@ -49,7 +49,7 @@ public class Aresta implements Comparable<Object> {
 
   }
 
-  public static float sum(List<Aresta> listaArestas) {
+  public static double sum(List<Aresta> listaArestas) {
     float somatorioPesos = 0;
     
     for (Aresta aresta : listaArestas) {
