@@ -1,64 +1,75 @@
 package ufc.ia.cvas.algorithm;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 import ufc.ia.cvas.entity.Aresta;
 import ufc.ia.cvas.entity.Cidade;
 import ufc.ia.cvas.entity.ConjuntoDisjunto;
 
 public class Kruskal {
-	private static Random r;
 	private static float menorCaminho = 0;
 	private ArrayList<Aresta> grafoGerado;
 	ArrayList<Aresta> menorGrafo;
-	private static ArrayList<Cidade> listaCidades;
+	private ArrayList<Cidade> listaCidades;
 	private static ArrayList<Aresta> listaArestas;
 	private ConjuntoDisjunto conjuntoDisjunto;
-	private int sementeAleatoria;
+
 	private int numeroPontos;
 	private int maxArestas;
 	
-	public Kruskal(int numeroPontos) {
+	ArrayList<Aresta> melhoresArestas; 
+	
+	public Kruskal(ArrayList<Cidade> listaCidades) {
 
-		this.numeroPontos = numeroPontos;
-		this.maxArestas = (this.numeroPontos * (this.numeroPontos - 1)) / 2;
-		this.sementeAleatoria = 10;
+		this.numeroPontos = listaCidades.size();
+		System.out.println("QTD.: SALTOS: " + numeroPontos);
 		
-	    listaCidades = new ArrayList<Cidade>(this.numeroPontos);
-	    listaArestas = new ArrayList<Aresta>(this.maxArestas);
-	    menorGrafo = new ArrayList<Aresta>();
-	    r = new Random();
+		//Utilizando o metodo das diagonais de um poligono
+		maxArestas = geraMaximoDiagonais(numeroPontos);
+
+		this.listaCidades = listaCidades;
+	    listaArestas = new ArrayList<Aresta>(maxArestas);
 	    
-	    geradorVerticesAleatorios(sementeAleatoria, numeroPontos,maxArestas);
+	    melhoresArestas = new ArrayList<Aresta>();
+	    	    
+	    gerarArvoreMinima(listaCidades);
+	    
+	    melhoresArestas.addAll(getMenorGrafo());
+	    
+	    /**MELHORES ARESTAS DA ITERACAO**/
+//	    for (Aresta a : melhoresArestas) {
+//			System.out.println(a.toString());
+//		}
+				    
 	}
 
-	  /*******************************************************************/
-	  public float geradorVerticesAleatorios(int seed, int numeroPontos, int maxArestas) {
-	    
-	    //Popula lista com pontos aleatórios
-	    for (int i = 0; i < numeroPontos; i++){
-	    	listaCidades.add(new Cidade("X", 
-	    			r.nextInt((int) Float.MAX_VALUE)%20,
-	    			r.nextInt((int) Float.MAX_VALUE)%20));
-	    }
-//	    listaVertices.add(new Vertice(1,1));
-//	    listaVertices.add(new Vertice(2,3));
-//	    listaVertices.add(new Vertice(1,2));
-//	    listaVertices.add(new Vertice(3,3));
-	    
-		  
+	private int geraMaximoDiagonais(int pontos){
+		return (pontos * (pontos - 1)) / 2;
+	}
+	
+	/** GERADOR DE ARVORE MINIMA **/
+	public float gerarArvoreMinima(ArrayList<Cidade> listaCidades) {
+		menorGrafo = new ArrayList<Aresta>();
+				  
 	    //Matriz de Adjacência
-	    for (int i = 0; i < numeroPontos; i++) {
-	      for (int j = 0; j < numeroPontos; j++) {
+	    for (int i = 0; i < listaCidades.size(); i++) {
+	      for (int j = 0; j < listaCidades.size(); j++) {
 	        if (i != j){
 	        	Cidade u = listaCidades.get(i);
 	        	Cidade v = listaCidades.get(j);
 	        	
 	        	Aresta arestaAux = new Aresta(u, v, Cidade.getDistanciaDuasCidades(u, v));
 	        	listaArestas.add(arestaAux);
-	        }	        
+	        	
+	        	DecimalFormat df = new DecimalFormat("#.00");
+	        	
+	        	/** LOG DO PROCESSO GERAL **/
+//	        	System.out.print("[("+listaArestas.get(i).getU().getX()+","+listaArestas.get(i).getU().getY()+")");
+//		    	System.out.print("("+listaArestas.get(i).getV().getX()+","+listaArestas.get(i).getV().getY()+")");
+//		    	System.out.println("("+df.format(listaArestas.get(i).getPeso())+")]");
+	        }        
 	      }
 	    }
 
@@ -82,17 +93,17 @@ public class Kruskal {
 	    
 	    int cont = 1;
 	    for (Aresta e : grafoGerado) {
+	    	
 	    	System.out.print("Aresta: "+cont++);
 	    	System.out.print(" - U"+"("+e.getU().getX()+","+e.getU().getY()+")");
 	    	System.out.println(" - V"+"("+e.getV().getX()+","+e.getV().getY()+")");
-	    	
+	    	    	
 	    	menorCaminho += Math.sqrt(e.getPeso());
 	    }	    
 	    
-	    System.out.println("Tamanho da arvore: "+ grafoGerado.size());
+	    //System.out.println("Tamanho da arvore: "+ grafoGerado.size());
 	    
 	    //REMOVER ARESTAS COINCIDENTES
-	    
 	    for (Aresta aresta : grafoGerado) {
 			if(aresta.getU().getX() == aresta.getV().getX() &&
 			   aresta.getU().getY() == aresta.getV().getY()){
@@ -102,13 +113,14 @@ public class Kruskal {
 			
 		}
 	    
-	    System.out.println("Total da Arvore minima: "+ menorGrafo.size());
-	    System.out.println("\t Tamanho do percurso "+menorCaminho);
+	    System.out.println("PERCURSO: "+ menorGrafo.size());
+	    System.out.println("\tCOMPRIMENTO: "+menorCaminho);
 	    return menorCaminho;
 	  }
 	  
 	  public ArrayList<Aresta> getMenorGrafo(){
 		  return this.grafoGerado;
 	  }
-	}
+	
+}
 	

@@ -9,11 +9,14 @@ public class Cidade {
 	private float h;
 	private No no;
 	
+	private boolean visitado;
+	
 	public Cidade(String nome, float x2, float y2) {
 		this.nome = nome;
 		this.x = x2;
 		this.y = y2;
 		this.h = 0;
+		this.visitado = false;
 	}
 	
 	public float getX() {	return x; }
@@ -44,6 +47,14 @@ public class Cidade {
 
 	public void setNo(No no) {
 		this.no = no;
+	}
+	
+	public boolean isVisitado() {
+		return visitado;
+	}
+
+	public void setVisitado(boolean visitado) {
+		this.visitado = visitado;
 	}
 
 	public String toString(){

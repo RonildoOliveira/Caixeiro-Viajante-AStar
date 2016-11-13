@@ -58,4 +58,8 @@ public class Aresta implements Comparable<Object> {
     
     return somatorioPesos;
   }
+  
+  public String toString(){
+	return u.getNome() + " - " + v.getNome();
+  }
 }
