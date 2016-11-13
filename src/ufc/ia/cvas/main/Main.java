@@ -1,9 +1,8 @@
-package ufc.ia.cvas;
+package ufc.ia.cvas.main;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 
