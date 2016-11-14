@@ -1,6 +1,5 @@
 package ufc.ia.cvas.algorithm;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,31 +9,35 @@ import ufc.ia.cvas.entity.ConjuntoDisjunto;
 
 public class Kruskal {
 	private static float menorCaminho = 0;
+	
 	private ArrayList<Aresta> grafoGerado;
-	ArrayList<Aresta> menorGrafo;
+	private ArrayList<Aresta> menorGrafo;
+	
+	@SuppressWarnings("unused")
 	private ArrayList<Cidade> listaCidades;
+	
 	private static ArrayList<Aresta> listaArestas;
+	private ArrayList<Aresta> melhoresArestas;
+	
 	private ConjuntoDisjunto conjuntoDisjunto;
 
 	private int numeroPontos;
 	private int maxArestas;
 	
-	ArrayList<Aresta> melhoresArestas; 
-	
-	public Kruskal(ArrayList<Cidade> listaCidades) {
-
-		this.numeroPontos = listaCidades.size();
-		System.out.println("QTD.: SALTOS: " + numeroPontos);
+	public Kruskal(ArrayList<Cidade> cidades) {
 		
 		//Utilizando o metodo das diagonais de um poligono
+		numeroPontos = cidades.size();
 		maxArestas = geraMaximoDiagonais(numeroPontos);
-
-		this.listaCidades = listaCidades;
-	    listaArestas = new ArrayList<Aresta>(maxArestas);
-	    
+				
+		listaArestas = new ArrayList<Aresta>(maxArestas);
 	    melhoresArestas = new ArrayList<Aresta>();
-	    	    
-	    gerarArvoreMinima(listaCidades);
+	    
+		System.out.println("QTD.: SALTOS: " + numeroPontos);
+		
+		listaCidades = cidades;
+
+		gerarArvoreMinima(cidades);
 	    
 	    melhoresArestas.addAll(getMenorGrafo());
 	    
@@ -63,9 +66,8 @@ public class Kruskal {
 	        	Aresta arestaAux = new Aresta(u, v, Cidade.getDistanciaDuasCidades(u, v));
 	        	listaArestas.add(arestaAux);
 	        	
-	        	DecimalFormat df = new DecimalFormat("#.00");
-	        	
 	        	/** LOG DO PROCESSO GERAL **/
+//	        	DecimalFormat df = new DecimalFormat("#.00");
 //	        	System.out.print("[("+listaArestas.get(i).getU().getX()+","+listaArestas.get(i).getU().getY()+")");
 //		    	System.out.print("("+listaArestas.get(i).getV().getX()+","+listaArestas.get(i).getV().getY()+")");
 //		    	System.out.println("("+df.format(listaArestas.get(i).getPeso())+")]");
@@ -94,14 +96,13 @@ public class Kruskal {
 	    int cont = 1;
 	    for (Aresta e : grafoGerado) {
 	    	
+	    	/** ARESTAS ESCOLHIDAS **/
 	    	System.out.print("Aresta: "+cont++);
 	    	System.out.print(" - U"+"("+e.getU().getX()+","+e.getU().getY()+")");
 	    	System.out.println(" - V"+"("+e.getV().getX()+","+e.getV().getY()+")");
 	    	    	
 	    	menorCaminho += Math.sqrt(e.getPeso());
 	    }	    
-	    
-	    //System.out.println("Tamanho da arvore: "+ grafoGerado.size());
 	    
 	    //REMOVER ARESTAS COINCIDENTES
 	    for (Aresta aresta : grafoGerado) {
@@ -123,4 +124,3 @@ public class Kruskal {
 	  }
 	
 }
-	

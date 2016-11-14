@@ -8,14 +8,19 @@ import ufc.ia.cvas.util.ManipuladorArquivos;
 
 public class Main {
 
-	public static int QUTD_PONTOS = 4;
+	public static int QUTD_PONTOS = 10;
 	public static ManipuladorArquivos mArq = new ManipuladorArquivos();
 	public static ArrayList<Cidade> listaCidades;
 	public static ArrayList<Cidade> subListaCidades;
+	
+	
 	public static void main(String[] args) {
 		
 		mArq.gerarPontos(QUTD_PONTOS);
 		listaCidades = mArq.carregar();
+		//Collections.shuffle(listaCidades);
+		//listaCidades.remove(0);
+		
 		subListaCidades = new ArrayList<Cidade>();
 		Kruskal k;
 		
@@ -30,15 +35,13 @@ public class Main {
 			k.getMenorGrafo();
 			
 		}
-		
-		//Kruskal k = new Kruskal(listaCidades);
-		
-		
-		//Escreve o grafo resultante numa página HTML
+				
+		//Escreve o grafo resultante numa pagina HTML
 		ManipuladorArquivos manipArq = new ManipuladorArquivos();
 		manipArq.escreverResultado(cidadesToJS(subListaCidades));
 	}
 	
+	//Mapeia os nos (cidades) e escreve o diagrama
 	public static String cidadesToJS (ArrayList<Cidade> listaCidades){
 
 		String nodesHTML = "";
